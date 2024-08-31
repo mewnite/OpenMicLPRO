@@ -114,4 +114,3 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
   } finally {
     spinner.style.display = 'none'; // Ocultar el spinner
   }
-});
