@@ -43,8 +43,39 @@ async function saveParticipant(name, aka, photoURL) {
 }
 
 // Manejar el envío del formulario
-document.getElementById('signupForm').addEventListener('submit', async (event) => {
-  event.preventDefault();
+document.getElementById("signupForm").addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const spinner = document.getElementById("spinner");
+    const message = document.getElementById("message");
+
+    // Verifica que los elementos existen antes de acceder a ellos
+    if (spinner && message) {
+        spinner.style.display = "block";  // Muestra el spinner
+        message.style.display = "none";   // Oculta el mensaje durante el envío
+
+        try {
+            // Aquí realizas la lógica de envío a Firestore
+
+            // Supongamos que los datos fueron enviados correctamente
+            message.textContent = "Registro completado";
+            message.className = "success";
+            message.style.display = "block";  // Muestra el mensaje de éxito
+
+        } catch (error) {
+            console.error("Error al enviar los datos: ", error);
+
+            message.textContent = "Falló";
+            message.className = "error";
+            message.style.display = "block";  // Muestra el mensaje de error
+        } finally {
+            spinner.style.display = "none";  // Oculta el spinner cuando finaliza el envío
+        }
+    } else {
+        console.error("No se pudo encontrar el elemento spinner o message en el DOM.");
+    }
+});
+
   
   const name = document.getElementById('name').value;
   const aka = document.getElementById('aka').value;
