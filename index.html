@@ -16,6 +16,18 @@
             align-items: center;
         }
 
+         #successMessage, #errorMessage {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        #successMessage {
+            background-color: #4CAF50; /* Verde */
+            color: white;
+        }
         header {
             width: 100%;
             padding: 20px;
@@ -155,6 +167,8 @@
     <div id="spinner" class="spinner"></div>
     <div id="message"></div>
     <div id="submittedData"></div>
+    <div id="successMessage">¡Registro completado!</div>
+    <div id="errorMessage">Falló el registro</div>
 
     <script src="app.js" type="module"></script>
 </body>
