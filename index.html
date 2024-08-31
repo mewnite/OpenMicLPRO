@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Pibes del Rap - Inscripción</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #282828; /* Color de fondo oscuro */
+            color: #ffffff; /* Texto en blanco */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px;
+            background-color: #1b1b1b; /* Fondo ligeramente más oscuro para el encabezado */
+            text-align: center;
+        }
+
+        header img {
+            max-width: 200px;
+            height: auto;
+        }
+
+        form {
+            margin-top: 20px;
+            background-color: #333333; /* Fondo gris oscuro para el formulario */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        form input[type="text"], form button, form input[type="file"] {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        form input[type="text"] {
+            background-color: #4c4c4c; /* Color de fondo del input */
+            color: #ffffff; /* Color de texto en el input */
+        }
+
+        .custom-file-upload  {
+            margin-top: 4px;
+            margin-bottom: 5px;
+            background-color: #4c4c4c; /* Color del botón personalizado */
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #5e5e5e; /* Fondo más claro al pasar el mouse */
+        }
+
+        form input[type="file"] {
+            display: none; /* Oculta el input original */
+        }
+
+        form button {
+            background-color: #fbc02d; /* Color amarillo similar al logo */
+            color: #000000;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #fdd835; /* Un tono más claro al pasar el mouse */
+        }
+
+        #submittedData {
+            margin-top: 30px;
+            width: 300px;
+            text-align: center;
+        }
+
+        #submittedData img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover; 
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="" alt="Los Pibes del Rap">
+    </header>
+
+    <form id="signupForm">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" required>
+        
+        <label for="aka">AKA (Nombre de rapero):</label>
+        <input type="text" id="aka" required>
+        
+        <label for="photo">Foto de Cuerpo Entero:</label>
+        <input type="file" id="photo" accept="image/*" required>
+        <label for="photo" class="custom-file-upload">
+            Elegir archivo
+        </label>
+        <button type="submit">Inscribirse</button>
+    </form>
+
+    <div id="submittedData"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
