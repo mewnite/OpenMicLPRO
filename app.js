@@ -5,12 +5,12 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstati
 
 // Configuración de Firebase para tu aplicación web
 const firebaseConfig = {
-  apiKey: "AIzaSyAaa-uuPE8QicBc_KSGxFON1LdR3d_MmTY",
-  authDomain: "lrpo-b68c0.firebaseapp.com",
-  projectId: "lrpo-b68c0",
-  storageBucket: "lrpo-b68c0.appspot.com",
-  messagingSenderId: "940081426852",
-  appId: "1:940081426852:web:b4835c294c0232ace29131"
+  apiKey: "AIzaSyA3NbOrszfuDgQT_I0fda-rugxdeKurM_4",
+  authDomain: "registerlpro.firebaseapp.com",
+  projectId: "registerlpro",
+  storageBucket: "registerlpro.appspot.com",
+  messagingSenderId: "139406970618",
+  appId: "1:139406970618:web:239599a6c56bcff6ee8343"
 };
 
 // Inicializar Firebase
@@ -22,79 +22,55 @@ const storage = getStorage(app);
 async function uploadPhoto(name, aka, photo) {
   const folderPath = `${name} (${aka})/${photo.name}`;
   const storageRef = ref(storage, folderPath);
+  
+  console.log('Subiendo foto a Firebase Storage...');
+  
   await uploadBytes(storageRef, photo);
+  
+  console.log('Foto subida exitosamente. Obteniendo URL...');
+  
   const photoURL = await getDownloadURL(storageRef);
+  
+  console.log('URL obtenida:', photoURL);
+  
   return photoURL;
 }
 
 // Función para guardar los datos del participante en Firestore
 async function saveParticipant(name, aka, photoURL) {
-  try {
-    await addDoc(collection(db, "participants"), {
-      name: name,
-      aka: aka,
-      photoURL: photoURL
-    });
-    console.log("Datos enviados a Firestore"); // Verificación adicional
-  } catch (error) {
-    console.error("Error al agregar el documento: ", error);
-    throw error; // Lanza el error para manejarlo en la función de envío
-  }
+  console.log('Guardando participante en Firestore...');
+  
+  await addDoc(collection(db, "participants"), {
+    name: name,
+    aka: aka,
+    photoURL: photoURL
+  });
+  
+  console.log('Participante guardado en Firestore');
 }
 
 // Manejar el envío del formulario
 document.getElementById("signupForm").addEventListener("submit", async (event) => {
-    event.preventDefault();
+  event.preventDefault();
 
-    const spinner = document.getElementById("spinner");
-    const message = document.getElementById("message");
-
-    // Verifica que los elementos existen antes de acceder a ellos
-    if (spinner && message) {
-        spinner.style.display = "block";  // Muestra el spinner
-        message.style.display = "none";   // Oculta el mensaje durante el envío
-
-        try {
-            // Aquí realizas la lógica de envío a Firestore
-
-            // Supongamos que los datos fueron enviados correctamente
-            message.textContent = "Registro completado";
-            message.className = "success";
-            message.style.display = "block";  // Muestra el mensaje de éxito
-
-        } catch (error) {
-            console.error("Error al enviar los datos: ", error);
-
-            message.textContent = "Falló";
-            message.className = "error";
-            message.style.display = "block";  // Muestra el mensaje de error
-        } finally {
-            spinner.style.display = "none";  // Oculta el spinner cuando finaliza el envío
-        }
-    } else {
-        console.error("No se pudo encontrar el elemento spinner o message en el DOM.");
-    }
-});
-
-  
-  const name = document.getElementById('name').value;
-  const aka = document.getElementById('aka').value;
+  const name = document.getElementById('name').value.trim();
+  const aka = document.getElementById('aka').value.trim();
   const photo = document.getElementById('photo').files[0];
   const spinner = document.getElementById('spinner');
-  const successMessage = document.getElementById('successMessage');
-  const errorMessage = document.getElementById('errorMessage');
+  const message = document.getElementById('message');
 
-  // Ocultar mensajes anteriores
-  successMessage.style.display = 'none';
-  errorMessage.style.display = 'none';
-
+  // Validar campos
   if (!name || !aka || !photo) {
     alert('Por favor, completa todos los campos.');
+    return;
   }
 
   spinner.style.display = 'block'; // Mostrar el spinner
+  message.style.display = 'none';  // Ocultar cualquier mensaje previo
 
   try {
+    console.log('Comenzando proceso de inscripción...');
+
     // Subir la foto y obtener la URL con la nueva estructura de carpeta
     const photoURL = await uploadPhoto(name, aka, photo);
 
@@ -102,15 +78,23 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
     await saveParticipant(name, aka, photoURL);
 
     // Mostrar mensaje de éxito
-    successMessage.style.display = 'block';
+    message.textContent = "Registro completado";
+    message.className = "success";
+    message.style.display = 'block';
 
     // Resetear el formulario
     document.getElementById('signupForm').reset();
+
+    console.log('Proceso de inscripción completado con éxito.');
   } catch (error) {
     console.error("Error al inscribir al participante: ", error);
-    
+
     // Mostrar mensaje de error
-    errorMessage.style.display = 'block';
+    message.textContent = "Falló";
+    message.className = "error";
+    message.style.display = 'block';
   } finally {
+    console.log('Finalizando proceso, ocultando spinner...');
     spinner.style.display = 'none'; // Ocultar el spinner
   }
+});
