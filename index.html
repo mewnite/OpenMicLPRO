@@ -135,20 +135,23 @@
         <img src="./logo.png" alt="Los Pibes del Rap">
     </header>
 
-    <form id="signupForm">
-        <label for="name">Nombre:</label>
-        <input type="text" id="name" required>
-        
-        <label for="aka">AKA (Nombre de rapero):</label>
-        <input type="text" id="aka" required>
-        
-        <label for="photo">Foto de Cuerpo Entero:</label>
-        <input type="file" id="photo" accept="image/*" required>
-        <label for="photo" class="custom-file-upload">
-            Elegir archivo
-        </label>
-        <button type="submit">Inscribirse</button>
-    </form>
+ <form id="signupForm">
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" required>
+    
+    <label for="aka">AKA (Nombre de rapero):</label>
+    <input type="text" id="aka" required>
+    
+    <label for="photo">Foto de Cuerpo Entero:</label>
+    <input type="file" id="photo" accept="image/*" required>
+    <label for="photo" class="custom-file-upload">
+        Elegir archivo
+    </label>
+    <button type="submit">Inscribirse</button>
+</form>
+
+<div id="loadingSpinner" style="display: none;">Cargando...</div> <!-- Spinner visible solo durante la carga -->
+<div id="statusMessage"></div> <!-- Mensaje de estado -->
 
     <div id="spinner" class="spinner"></div>
     <div id="message"></div>
