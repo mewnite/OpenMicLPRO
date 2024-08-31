@@ -20,7 +20,6 @@ const storage = getStorage(app);
 
 // Función para subir la foto a Firebase Storage en la estructura nombre (aka)/imagen
 async function uploadPhoto(name, aka, photo) {
-  // Crear la ruta de la carpeta como "nombre (aka)/nombre-de-la-imagen"
   const folderPath = `${name} (${aka})/${photo.name}`;
   const storageRef = ref(storage, folderPath);
   await uploadBytes(storageRef, photo);
@@ -30,42 +29,46 @@ async function uploadPhoto(name, aka, photo) {
 
 // Función para guardar los datos del participante en Firestore
 async function saveParticipant(name, aka, photoURL) {
-  try {
-    await addDoc(collection(db, "participants"), {
-      name: name,
-      aka: aka,
-      photoURL: photoURL
-    });
-    alert('¡Inscripción completada con éxito!');
-  } catch (error) {
-    console.error("Error al agregar el documento: ", error);
-  }
+  await addDoc(collection(db, "participants"), {
+    name: name,
+    aka: aka,
+    photoURL: photoURL
+  });
 }
 
 // Manejar el envío del formulario
 document.getElementById('signupForm').addEventListener('submit', async (event) => {
   event.preventDefault();
-  
+
   const name = document.getElementById('name').value;
   const aka = document.getElementById('aka').value;
   const photo = document.getElementById('photo').files[0];
+  const spinner = document.getElementById('spinner');
+  const message = document.getElementById('message');
 
   if (!name || !aka || !photo) {
     alert('Por favor, completa todos los campos.');
     return;
   }
 
-  try {
-    // Subir la foto y obtener la URL con la nueva estructura de carpeta
-    const photoURL = await uploadPhoto(name, aka, photo);
+  // Mostrar spinner mientras se procesa la solicitud
+  spinner.style.display = 'block';
+  message.style.display = 'none';
 
-    // Guardar los datos del participante en Firestore
+  try {
+    const photoURL = await uploadPhoto(name, aka, photo);
     await saveParticipant(name, aka, photoURL);
 
-    // Resetear el formulario
+    message.textContent = 'Registro completado';
+    message.className = 'success';
     document.getElementById('signupForm').reset();
   } catch (error) {
     console.error("Error al inscribir al participante: ", error);
-    alert('Hubo un error al procesar tu inscripción. Intenta nuevamente.');
+    message.textContent = 'Falló';
+    message.className = 'error';
+  } finally {
+    // Ocultar spinner y mostrar mensaje
+    spinner.style.display = 'none';
+    message.style.display = 'block';
   }
 });
