@@ -18,9 +18,11 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Función para subir la foto a Firebase Storage
-async function uploadPhoto(photo) {
-  const storageRef = ref(storage, 'images/' + photo.name);
+// Función para subir la foto a Firebase Storage en la estructura nombre (aka)/imagen
+async function uploadPhoto(name, aka, photo) {
+  // Crear la ruta de la carpeta como "nombre (aka)/nombre-de-la-imagen"
+  const folderPath = `${name} (${aka})/${photo.name}`;
+  const storageRef = ref(storage, folderPath);
   await uploadBytes(storageRef, photo);
   const photoURL = await getDownloadURL(storageRef);
   return photoURL;
@@ -54,14 +56,14 @@ document.getElementById('signupForm').addEventListener('submit', async (event) =
   }
 
   try {
-    // Subir la foto y obtener la URL
-    const photoURL = await uploadPhoto(photo);
+    // Subir la foto y obtener la URL con la nueva estructura de carpeta
+    const photoURL = await uploadPhoto(name, aka, photo);
 
     // Guardar los datos del participante en Firestore
     await saveParticipant(name, aka, photoURL);
 
     // Resetear el formulario
-    document.getElementById('registrationForm').reset();
+    document.getElementById('signupForm').reset();
   } catch (error) {
     console.error("Error al inscribir al participante: ", error);
     alert('Hubo un error al procesar tu inscripción. Intenta nuevamente.');
