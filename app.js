@@ -37,38 +37,47 @@ async function saveParticipant(name, aka, photoURL) {
 }
 
 // Manejar el envío del formulario
+// Manejar el envío del formulario
 document.getElementById('signupForm').addEventListener('submit', async (event) => {
-  event.preventDefault();
+    event.preventDefault();
+    
+    const name = document.getElementById('name').value;
+    const aka = document.getElementById('aka').value;
+    const photo = document.getElementById('photo').files[0];
 
-  const name = document.getElementById('name').value;
-  const aka = document.getElementById('aka').value;
-  const photo = document.getElementById('photo').files[0];
-  const spinner = document.getElementById('spinner');
-  const message = document.getElementById('message');
+    // Mostrar el spinner
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    loadingSpinner.style.display = 'block';
 
-  if (!name || !aka || !photo) {
-    alert('Por favor, completa todos los campos.');
-    return;
-  }
+    // Limpiar cualquier mensaje de estado anterior
+    const statusMessage = document.getElementById('statusMessage');
+    statusMessage.textContent = '';
 
-  // Mostrar spinner mientras se procesa la solicitud
-  spinner.style.display = 'block';
-  message.style.display = 'none';
+    if (!name || !aka || !photo) {
+        loadingSpinner.style.display = 'none'; // Ocultar spinner en caso de error
+        alert('Por favor, completa todos los campos.');
+        return;
+    }
 
-  try {
-    const photoURL = await uploadPhoto(name, aka, photo);
-    await saveParticipant(name, aka, photoURL);
+    try {
+        // Subir la foto y obtener la URL con la nueva estructura de carpeta
+        const photoURL = await uploadPhoto(name, aka, photo);
 
-    message.textContent = 'Registro completado';
-    message.className = 'success';
-    document.getElementById('signupForm').reset();
-  } catch (error) {
-    console.error("Error al inscribir al participante: ", error);
-    message.textContent = 'Falló';
-    message.className = 'error';
-  } finally {
-    // Ocultar spinner y mostrar mensaje
-    spinner.style.display = 'none';
-    message.style.display = 'block';
-  }
+        // Guardar los datos del participante en Firestore
+        await saveParticipant(name, aka, photoURL);
+
+        // Mostrar mensaje de éxito
+        statusMessage.textContent = '¡Inscripción completada con éxito!';
+        statusMessage.style.color = 'green';
+    } catch (error) {
+        console.error("Error al inscribir al participante: ", error);
+        statusMessage.textContent = 'Hubo un error al procesar tu inscripción. Intenta nuevamente.';
+        statusMessage.style.color = 'red';
+    } finally {
+        // Ocultar el spinner
+        loadingSpinner.style.display = 'none';
+
+        // Resetear el formulario
+        document.getElementById('signupForm').reset();
+    }
 });
