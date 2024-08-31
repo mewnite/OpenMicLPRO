@@ -3,6 +3,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/fireba
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
+
+
 // Configuración de Firebase para tu aplicación web
 const firebaseConfig = {
   apiKey: "AIzaSyA3NbOrszfuDgQT_I0fda-rugxdeKurM_4",
@@ -97,4 +99,19 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
     console.log('Finalizando proceso, ocultando spinner...');
     spinner.style.display = 'none'; // Ocultar el spinner
   }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  const photoInput = document.getElementById('photo');
+  const fileNameDisplay = document.getElementById('fileName');
+
+  photoInput.addEventListener('change', function() {
+      const file = photoInput.files[0];
+      if (file) {
+          fileNameDisplay.textContent = `Has cargado el archivo: ${file.name}`;
+      } else {
+          fileNameDisplay.textContent = '';
+      }
+  });
 });
