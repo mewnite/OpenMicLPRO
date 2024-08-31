@@ -5,107 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Los Pibes del Rap - Inscripción</title>
     <style>
+        /* Estilos del formulario y otros elementos */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #282828;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
             color: #ffffff;
             margin: 0;
             padding: 0;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
+            flex-direction: column;
         }
 
-        header {
-            width: 100%;
-            padding: 20px;
-            background-color: #1b1b1b;
-            text-align: center;
-        }
-
-        header img {
-            max-width: 200px;
-            height: auto;
+        h1 {
+            color: #FF9800;
+            margin-bottom: 20px;
         }
 
         form {
-            margin-top: 20px;
-            background-color: #333333;
+            background-color: #1E1E1E;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
         }
 
-        form input[type="text"], form button, form input[type="file"] {
+        label {
             display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"],
+        input[type="file"] {
             width: 100%;
-            margin-bottom: 15px;
             padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #FF9800;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
             font-size: 16px;
-        }
-
-        form input[type="text"] {
-            background-color: #4c4c4c;
-            color: #ffffff;
-        }
-
-        .custom-file-upload {
-            margin-top: 4px;
-            margin-bottom: 5px;
-            background-color: #4c4c4c;
-            color: #ffffff;
-            padding: 10px;
-            border-radius: 5px;
-            display: inline-block;
             cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s ease;
         }
 
-        .custom-file-upload:hover {
-            background-color: #5e5e5e;
+        button[type="submit"]:hover {
+            background-color: #E68A00;
         }
 
-        form input[type="file"] {
+        #spinner {
             display: none;
-        }
-
-        form button {
-            background-color: #fbc02d;
-            color: #000000;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        form button:hover {
-            background-color: #fdd835;
-        }
-
-        #submittedData {
-            margin-top: 30px;
-            width: 300px;
-            text-align: center;
-        }
-
-        #submittedData img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        /* Spinner CSS */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #4CAF50;
-            border-radius: 50%;
             width: 40px;
             height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 10px auto;
-            display: none;
+            margin: 20px auto;
         }
 
         @keyframes spin {
@@ -113,49 +83,46 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Mensajes de estado */
-        #message {
-            margin-top: 10px;
-            font-weight: bold;
-            text-align: center;
+        #successMessage, #errorMessage {
             display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
         }
 
-        #message.success {
-            color: green;
+        #successMessage {
+            background-color: #4CAF50; /* Verde */
+            color: white;
         }
 
-        #message.error {
-            color: red;
+        #errorMessage {
+            background-color: #f44336; /* Rojo */
+            color: white;
         }
     </style>
 </head>
 <body>
-    <header>
-        <img src="./logo.png" alt="Los Pibes del Rap">
-    </header>
+    <h1>Inscripción - Los Pibes del Rap</h1>
+    <form id="signupForm">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required>
+        
+        <label for="aka">Alias:</label>
+        <input type="text" id="aka" name="aka" required>
+        
+        <label for="photo">Foto (cuerpo entero):</label>
+        <input type="file" id="photo" name="photo" accept="image/*" required>
+        
+        <button type="submit">Inscribirse</button>
+    </form>
 
- <form id="signupForm">
-    <label for="name">Nombre:</label>
-    <input type="text" id="name" required>
-    
-    <label for="aka">AKA (Nombre de rapero):</label>
-    <input type="text" id="aka" required>
-    
-    <label for="photo">Foto de Cuerpo Entero:</label>
-    <input type="file" id="photo" accept="image/*" required>
-    <label for="photo" class="custom-file-upload">
-        Elegir archivo
-    </label>
-    <button type="submit">Inscribirse</button>
-</form>
+    <!-- Spinner de carga -->
+    <div id="spinner"></div>
 
-<div id="loadingSpinner" style="display: none;">Cargando...</div> <!-- Spinner visible solo durante la carga -->
-<div id="statusMessage"></div> <!-- Mensaje de estado -->
-
-    <div id="spinner" class="spinner"></div>
-    <div id="message"></div>
-    <div id="submittedData"></div>
+    <!-- Mensajes de estado -->
+    <div id="successMessage">¡Registro completado!</div>
+    <div id="errorMessage">Falló el registro</div>
 
     <script src="app.js" type="module"></script>
 </body>
