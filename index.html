@@ -7,8 +7,8 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #282828; /* Color de fondo oscuro */
-            color: #ffffff; /* Texto en blanco */
+            background-color: #282828;
+            color: #ffffff;
             margin: 0;
             padding: 0;
             display: flex;
@@ -19,7 +19,7 @@
         header {
             width: 100%;
             padding: 20px;
-            background-color: #1b1b1b; /* Fondo ligeramente más oscuro para el encabezado */
+            background-color: #1b1b1b;
             text-align: center;
         }
 
@@ -30,7 +30,7 @@
 
         form {
             margin-top: 20px;
-            background-color: #333333; /* Fondo gris oscuro para el formulario */
+            background-color: #333333;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -47,14 +47,14 @@
         }
 
         form input[type="text"] {
-            background-color: #4c4c4c; /* Color de fondo del input */
-            color: #ffffff; /* Color de texto en el input */
+            background-color: #4c4c4c;
+            color: #ffffff;
         }
 
-        .custom-file-upload  {
+        .custom-file-upload {
             margin-top: 4px;
             margin-bottom: 5px;
-            background-color: #4c4c4c; /* Color del botón personalizado */
+            background-color: #4c4c4c;
             color: #ffffff;
             padding: 10px;
             border-radius: 5px;
@@ -65,22 +65,22 @@
         }
 
         .custom-file-upload:hover {
-            background-color: #5e5e5e; /* Fondo más claro al pasar el mouse */
+            background-color: #5e5e5e;
         }
 
         form input[type="file"] {
-            display: none; /* Oculta el input original */
+            display: none;
         }
 
         form button {
-            background-color: #fbc02d; /* Color amarillo similar al logo */
+            background-color: #fbc02d;
             color: #000000;
             cursor: pointer;
             transition: background-color 0.3s;
         }
 
         form button:hover {
-            background-color: #fdd835; /* Un tono más claro al pasar el mouse */
+            background-color: #fdd835;
         }
 
         #submittedData {
@@ -92,13 +92,41 @@
         #submittedData img {
             width: 100%;
             height: 400px;
-            object-fit: cover; 
+            object-fit: cover;
             border-radius: 10px;
         }
-     header img{
-            width: 100px;
-            height: auto;
 
+        /* Spinner CSS */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #4CAF50;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mensajes de estado */
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+
+        #message.success {
+            color: green;
+        }
+
+        #message.error {
+            color: red;
         }
     </style>
 </head>
@@ -122,6 +150,8 @@
         <button type="submit">Inscribirse</button>
     </form>
 
+    <div id="spinner" class="spinner"></div>
+    <div id="message"></div>
     <div id="submittedData"></div>
 
     <script src="app.js" type="module"></script>
