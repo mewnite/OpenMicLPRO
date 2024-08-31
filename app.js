@@ -29,12 +29,19 @@ async function uploadPhoto(name, aka, photo) {
 
 // Función para guardar los datos del participante en Firestore
 async function saveParticipant(name, aka, photoURL) {
-  await addDoc(collection(db, "participants"), {
-    name: name,
-    aka: aka,
-    photoURL: photoURL
-  });
+    try {
+        console.log("Datos enviados a Firestore:", { name, aka, photoURL });  // Agrega este log
+        await addDoc(collection(db, "participants"), {
+            name: name,
+            aka: aka,
+            photoURL: photoURL
+        });
+        console.log("Inscripción completada con éxito");  // Log de éxito
+    } catch (error) {
+        console.error("Error al agregar el documento: ", error);
+    }
 }
+
 
 // Manejar el envío del formulario
 // Manejar el envío del formulario
