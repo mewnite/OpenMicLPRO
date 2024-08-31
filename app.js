@@ -10,7 +10,6 @@ const firebaseConfig = {
   projectId: "lrpo-b68c0",
   storageBucket: "lrpo-b68c0.appspot.com",
   messagingSenderId: "940081426852",
-  messagingSenderId: "940081426852",
   appId: "1:940081426852:web:b4835c294c0232ace29131"
 };
 
