@@ -93,3 +93,16 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  const photoInput = document.getElementById('photo');
+  const fileNameDisplay = document.getElementById('fileName');
+
+  photoInput.addEventListener('change', function() {
+      const file = photoInput.files[0];
+      if (file) {
+          fileNameDisplay.textContent = `Has cargado el archivo: ${file.name}`;
+      } else {
+          fileNameDisplay.textContent = '';
+      }
+  });
+});
