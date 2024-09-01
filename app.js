@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/fireba
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
-// Configuración de Firebase usando variables de entorno
+// Configuración de Firebase (con restricciones de seguridad configuradas en la consola de Firebase)
 const firebaseConfig = {
   apiKey: "AIzaSyA3NbOrszfuDgQT_I0fda-rugxdeKurM_4",
   authDomain: "registerlpro.firebaseapp.com",
@@ -18,36 +18,22 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-
-// Función para subir la foto a Firebase Storage en la estructura nombre (aka)/imagen
+// Función para subir la foto a Firebase Storage
 async function uploadPhoto(name, aka, photo) {
   const folderPath = `${name} (${aka})/${photo.name}`;
   const storageRef = ref(storage, folderPath);
-  
-  console.log('Subiendo foto a Firebase Storage...');
-  
   await uploadBytes(storageRef, photo);
-  
-  console.log('Foto subida exitosamente. Obteniendo URL...');
-  
   const photoURL = await getDownloadURL(storageRef);
-  
-  console.log('URL obtenida:', photoURL);
-  
   return photoURL;
 }
 
 // Función para guardar los datos del participante en Firestore
 async function saveParticipant(name, aka, photoURL) {
-  console.log('Guardando participante en Firestore...');
-  
   await addDoc(collection(db, "participants"), {
     name: name,
     aka: aka,
     photoURL: photoURL
   });
-  
-  console.log('Participante guardado en Firestore');
 }
 
 // Manejar el envío del formulario
@@ -60,7 +46,19 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
   const spinner = document.getElementById('spinner');
   const message = document.getElementById('message');
 
-  // Validar campos
+  // Validar longitud de los campos
+  if (name.length > 20 || aka.length > 20) {
+    alert('El nombre y el aka deben tener menos de 20 caracteres.');
+    return;
+  }
+
+  // Validar formato de la imagen
+  const validImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+  if (!validImageTypes.includes(photo.type)) {
+    alert('Solo se permiten imágenes en formato PNG, JPG o JPEG.');
+    return;
+  }
+
   if (!name || !aka || !photo) {
     alert('Por favor, completa todos los campos.');
     return;
@@ -70,37 +68,22 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
   message.style.display = 'none';  // Ocultar cualquier mensaje previo
 
   try {
-    console.log('Comenzando proceso de inscripción...');
-
-    // Subir la foto y obtener la URL con la nueva estructura de carpeta
     const photoURL = await uploadPhoto(name, aka, photo);
-
-    // Guardar los datos del participante en Firestore
     await saveParticipant(name, aka, photoURL);
-
-    // Mostrar mensaje de éxito
     message.textContent = "Registro completado";
     message.className = "success";
     message.style.display = 'block';
-
-    // Resetear el formulario
     document.getElementById('signupForm').reset();
-
-    console.log('Proceso de inscripción completado con éxito.');
   } catch (error) {
-    console.error("Error al inscribir al participante: ", error);
-
-    // Mostrar mensaje de error
     message.textContent = "Falló";
     message.className = "error";
     message.style.display = 'block';
   } finally {
-    console.log('Finalizando proceso, ocultando spinner...');
     spinner.style.display = 'none'; // Ocultar el spinner
   }
 });
 
-
+// Mostrar nombre del archivo en la pantalla cuando se seleccione
 document.addEventListener('DOMContentLoaded', function() {
   const photoInput = document.getElementById('photo');
   const fileNameDisplay = document.getElementById('fileName');
