@@ -93,6 +93,24 @@ document.getElementById("signupForm").addEventListener("submit", async (event) =
     }
 });
 
+
+document.addEventListener('DOMContentLoaded', function () {
+  window.onCaptchaSuccess = function() {
+      const inputs = document.querySelectorAll('#signupForm input[type="text"], #signupForm input[type="file"]');
+      const submitButton = document.querySelector('#signupForm button');
+      
+      inputs.forEach(input => input.disabled = false);
+      submitButton.disabled = false;
+  };
+
+  const script = document.createElement('script');
+  script.src = 'https://www.google.com/recaptcha/api.js';
+  script.async = true;
+  script.defer = true;
+  document.body.appendChild(script);
+});
+
+
 document.addEventListener('DOMContentLoaded', function() {
   const photoInput = document.getElementById('photo');
   const fileNameDisplay = document.getElementById('fileName');
@@ -106,3 +124,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   });
 });
+
+
+

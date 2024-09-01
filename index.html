@@ -9,156 +9,7 @@
     <meta property="og:image" content="./logo.png">
     <meta property="og:url" content="https://mewnite.github.io/">
     <title>Los Pibes del Rap - Inscripción</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #282828;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        #successMessage, #errorMessage {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        #successMessage {
-            background-color: #4CAF50; /* Verde */
-            color: white;
-        }
-
-        header {
-            width: 100%;
-            padding: 20px;
-            background-color: #1b1b1b;
-            text-align: center;
-        }
-
-        header img {
-            max-width: 200px;
-            height: auto;
-        }
-
-        form {
-            margin-top: 20px;
-            background-color: #333333;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        form input[type="text"], form button, form input[type="file"] {
-            display: block;
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        form input[type="text"] {
-            background-color: #4c4c4c;
-            color: #ffffff;
-        }
-
-        .custom-file-upload {
-            margin-top: 4px;
-            margin-bottom: 5px;
-            background-color: #4c4c4c;
-            color: #ffffff;
-            padding: 10px;
-            border-radius: 5px;
-            display: inline-block;
-            cursor: pointer;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-
-        .custom-file-upload:hover {
-            background-color: #5e5e5e;
-        }
-
-        form input[type="file"] {
-            display: none;
-        }
-
-        form button {
-            background-color: #fbc02d;
-            color: #000000;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        form button:hover {
-            background-color: #fdd835;
-        }
-
-        #submittedData {
-            margin-top: 30px;
-            width: 300px;
-            text-align: center;
-        }
-
-        #submittedData img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        /* Spinner CSS */
-        .spinner {
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-left-color: #4CAF50;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 10px auto;
-            display: none;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Mensajes de estado */
-        #message {
-            margin-top: 10px;
-            font-weight: bold;
-            text-align: center;
-            display: none;
-        }
-
-        #message.success {
-            color: green;
-        }
-
-        #message.error {
-            color: red;
-        }
-
-        .g-recaptcha{
-            margin-left: 15%;
-            margin-top: 2px;
-            margin-bottom: 5px;
-        }
-
-        #fileName{
-        margin-bottom: 10px;           
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
@@ -166,33 +17,38 @@
     </header>
 
     <form id="signupForm">
-        <label for="name">Nombre:</label>
-        <input type="text" id="name" required maxlength="20">
-        
-        <label for="aka">AKA (Nombre de rapero):</label>
-        <input type="text" id="aka" required maxlength="20">
-        
-        <label for="photo">Foto de Cuerpo Entero:</label>
-        <input type="file" id="photo" accept="image/png, image/jpeg, image/jpg" required>
-        <label for="photo" class="custom-file-upload">
-            Elegir archivo
-        </label>
-        <div id="fileName"></div>
+        <div class="input-container">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" required disabled>
+            <span class="input-disabled-icon">✗</span>
+            <div class="tooltip">Completar captcha primero</div>
+        </div>
 
-        <!-- Añadir el widget reCAPTCHA aquí -->
-        <div class="g-recaptcha" data-sitekey="6LeaujMqAAAAAAdYrUjOPAJPFYj25q5zVwMudTqg"></div>
-        <button type="submit">Inscribirse</button>
+        <div class="input-container">
+            <label for="aka">AKA (Nombre de rapero):</label>
+            <input type="text" id="aka" required disabled>
+            <span class="input-disabled-icon">✗</span>
+            <div class="tooltip">Completar captcha primero</div>
+        </div>
+
+        <div class="input-container">
+            <label for="photo">Foto de Cuerpo Entero:</label>
+            <input type="file" id="photo" accept="image/*" required disabled>
+            <span class="input-disabled-icon">✗</span>
+            <div class="tooltip">Completar captcha primero</div>
+            <div id="fileName"></div>
+        </div>
+
+        <div class="g-recaptcha" data-sitekey="6LeaujMqAAAAAAdYrUjOPAJPFYj25q5zVwMudTqg" data-callback="onCaptchaSuccess"></div>
+        <button type="submit" disabled>Inscribirse</button>
     </form>
-
     <div id="spinner" class="spinner"></div>
     <div id="message"></div>
     <div id="submittedData"></div>
-    <div id="successMessage">¡Registro completado!</div>
-    <div id="errorMessage">Falló el registro</div>
+    <div id="successMessage" style="display: none;">¡Registro completado!</div>
+    <div id="errorMessage" style="display: none;">Falló el registro</div>
 
-    <!-- reCAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
     <script src="app.js" type="module"></script>
 </body>
 </html>
