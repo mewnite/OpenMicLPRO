@@ -7,7 +7,7 @@
     <meta property="og:title" content="LPRO open mic">
     <meta property="og:description" content="Inscripción al open mic">
     <meta property="og:image" content="./logo.png">
-     <meta property="og:url" content="https://mewnite.github.io/">
+    <meta property="og:url" content="https://mewnite.github.io/">
     <title>Los Pibes del Rap - Inscripción</title>
     <style>
         body {
@@ -21,7 +21,7 @@
             align-items: center;
         }
 
-         #successMessage, #errorMessage {
+        #successMessage, #errorMessage {
             display: none;
             text-align: center;
             margin-top: 20px;
@@ -33,6 +33,7 @@
             background-color: #4CAF50; /* Verde */
             color: white;
         }
+
         header {
             width: 100%;
             padding: 20px;
@@ -155,19 +156,22 @@
     </header>
 
     <form id="signupForm">
-   <div class="g-recaptcha" data-sitekey="6LeaujMqAAAAAAdYrUjOPAJPFYj25q5zVwMudTqg"></div>
         <label for="name">Nombre:</label>
-        <input type="text" id="name" required>
+        <input type="text" id="name" required maxlength="20">
         
         <label for="aka">AKA (Nombre de rapero):</label>
-        <input type="text" id="aka" required>
+        <input type="text" id="aka" required maxlength="20">
         
         <label for="photo">Foto de Cuerpo Entero:</label>
-        <input type="file" id="photo" accept="image/*" required>
+        <input type="file" id="photo" accept="image/png, image/jpeg, image/jpg" required>
         <label for="photo" class="custom-file-upload">
             Elegir archivo
         </label>
         <div id="fileName"></div>
+
+        <!-- Añadir el widget reCAPTCHA aquí -->
+        <div class="g-recaptcha" data-sitekey="TU_CLAVE_DE_SITIO"></div>
+
         <button type="submit">Inscribirse</button>
     </form>
 
@@ -176,6 +180,9 @@
     <div id="submittedData"></div>
     <div id="successMessage">¡Registro completado!</div>
     <div id="errorMessage">Falló el registro</div>
+
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     <script src="app.js" type="module"></script>
 </body>
